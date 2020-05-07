@@ -1,0 +1,90 @@
+# Listing of Parameters
+# ---------------------
+subsection Boundary Condition
+  subsection Edge 01
+    set 1-Axis     = x
+    set 2-Location = 0.045
+    set 3-Fixity   = 0 0 
+    set 4-Dirichlet = t 0 
+    set 7-Gap      = 1e-7
+  end
+
+  subsection Edge 02
+    set 1-Axis     = x
+    set 2-Location = -0.045
+    set 3-Fixity   = 1 0    
+    set 7-Gap      = 1e-7
+  end
+
+  subsection Edge 03
+    set 1-Axis     = y
+    set 2-Location = 0.045
+    set 6-Flat     = 0 1    
+    set 7-Gap      = 1e-7
+  end
+
+  subsection Edge 04
+    set 1-Axis     = y
+    set 2-Location = -0.045
+    set 3-Fixity     = 0 1    
+    set 7-Gap      = 1e-7
+  end
+
+  set Fix Point BC       = 0 1 
+  set Fix Point Coords   = -0.045 -0.045 
+end
+
+subsection Element properties  
+  set Elem 01 1-Type       = mechanical_large
+  set Elem 01 2-Mat        = neo_hookean
+  set Elem 01 3-Float Para = elas e=2000 nu=0.45
+
+  set Elem 02 1-Type       = mechanical_large
+  set Elem 02 2-Mat        = neo_hookean
+  set Elem 02 3-Float Para = elas e=20 nu=0.45
+end
+
+subsection Finite element system
+  set Block info                            = displacement
+  set Polynomial degree                     = 1
+  set Quadrature order                      = 2  
+end
+
+subsection Outputs
+  # If Butler Volmer Kinetics is used in the simulation or not
+  set Local Debug                            = false
+  set Debug coords                           = 0.0 0.0 0.0
+  set Strain Definition                      = engineering
+  set CSV output                             = true
+  set Visualization format                   = paraview
+  set Force BCs ID                           = 1
+  set Output Variable Name                   = sxx syy sxy mises exx eyy exy emax
+  set Integral variable names                = 
+end
+
+subsection Linear solver  
+  set Solver Method = staggered
+  set Solver type   = cg
+  set max iterations = 20000
+end
+
+subsection Geometry
+  set Mesh file              = mesh_P2.inp
+  set Dimensions             = 2  
+end
+
+
+subsection Time
+  #set Time List = time.dat
+  set Time step size = 0.0009
+  set Total Steps    = 100
+end
+
+
+subsection Nonlinear solver
+  set Absolute tolerance = 1.0e-8
+  set Max iterations     = 8
+  set Tolerance          = 1.0e-6
+end
+
+
