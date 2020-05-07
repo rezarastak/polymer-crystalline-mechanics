@@ -1,0 +1,40 @@
+## Program to create a circular crystalline region within a square region
+
+reset
+
+#mesh parameters
+{a=0.09}
+{r=0.023}
+
+#create the geometry
+create surface rectangle width {a}
+create surface circle radius {r}
+
+subtract 2 from 1 keep
+
+delete surface 1
+merge all
+
+#grouping the blocks
+group "crys" add surface 2
+group "amor" add surface 3
+
+block 1 group crys
+block 1 element type QUAD
+
+block 2 group amor
+block 2 element type QUAD
+
+#Meshing
+surface 2 size 0.001
+surface 2 scheme circle
+
+mesh surface 2
+
+#surface 3 size auto factor 1
+surface 3 scheme hole rad_intervals 50 Bias -2
+
+mesh surface 3
+
+export abaqus "mesh_r23.inp" block 1,2 dimension 2 overwrite partial flat
+
